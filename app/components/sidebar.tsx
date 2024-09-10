@@ -66,26 +66,29 @@ export const SideBarSection: React.FC<{
           return items;
         }),
     };
-    console.log("data::::", data);
 
     const webhookUrl =
       "https://webhook.site/41008ac9-a480-40f3-bcee-abad48fc4d5e";
     const corsProxy = "https://cors-anywhere.herokuapp.com/";
-    try {
-      const response = await axios.post(corsProxy + webhookUrl, data, {
-        headers: {
-          "X-Requested-With": "XMLHttpRequest",
-        },
-      });
-      if (response.status === 200) {
-        alert("Segment's saved successfully");
-        console.log("Success!");
-      } else {
-        console.log("Failed!");
+
+    if (data.segment_name !== "" && selectedSegments.length) {
+      try {
+        const response = await axios.post(corsProxy + webhookUrl, data, {
+          headers: {
+            "X-Requested-With": "XMLHttpRequest",
+          },
+        });
+        if (response.status === 200) {
+          alert("Segment's saved successfully");
+          console.log("Success!");
+        } else {
+          console.log("Failed!");
+        }
+      } catch (error) {
+        console.error("Error:", error);
       }
-    } catch (error) {
-      console.error("Error:", error);
-      console.log("Error occurred!");
+    } else {
+      alert("Segment details missing");
     }
   };
 
